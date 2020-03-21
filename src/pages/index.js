@@ -1,21 +1,16 @@
 import React from "react"
-import { Link } from "gatsby"
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+import Combobox from "../components/combobox/combobox"
+
+import _styles from "../components/combobox/combobox.module.scss"
 
 const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
+  <div className={`${_styles.layout}`}>
+    <div className={`${_styles.hero}`}>
+      <h1>Here's an autocomplete</h1>
+      <Combobox />
     </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
+  </div>
 )
 
 export default IndexPage

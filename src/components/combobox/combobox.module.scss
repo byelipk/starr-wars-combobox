@@ -1,0 +1,71 @@
+html {
+  font-family: Montserrat;
+  font-size: 18px;
+} 
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+}
+
+.hero {
+  border: 1px solid #dfe0df;
+  padding: 40px;
+  width: 500px;
+}
+
+///////////////////////////////////
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.token {
+  padding: 0.15rem;
+  border-radius: 4px;
+  background: pink;
+  color: white;
+  margin-right: 5px;
+  margin-bottom: 3px;
+}
+
+.input {
+  border: 0;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
+}
+
+.combobox {
+  border: 1px solid #dfe0df;
+  min-height: 32px;
+  padding: 5px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  button,
+  input {
+    font-size: 1rem;
+  }
+}
+
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menuOpen {
+  border: 1px solid #dfe0df;
+}
+
+.menuItem {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
