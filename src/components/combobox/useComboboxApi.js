@@ -19,8 +19,17 @@ export const useComboboxApi = (inputRef) => {
   }
 
   const removeToken = index => {
-    setTokens(tokens => tokens.filter((_, idx) => idx !== index))
-    focusInput()
+    setTokens(tokens => {
+      const changes = tokens.filter((_, idx) => idx !== index)
+
+      if (changes.length > 0) {
+        focusToken(index - 1)
+      } else {
+        focusInput()
+      }
+
+      return changes
+    })
   }
 
   const focusInput = () => inputRef.current && inputRef.current.focus()
