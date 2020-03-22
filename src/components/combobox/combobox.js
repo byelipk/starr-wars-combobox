@@ -3,7 +3,7 @@ import React, { useState, useRef, createRef } from "react"
 import AutosizeInput from "react-input-autosize"
 import { useCombobox } from "downshift"
 import { useStarWarsApi, peopleEndpoint } from "./useStarWarsApi"
-import { useComboboxApi } from "./useComboboxApi"
+import { useComboboxState } from "./useComboboxState"
 
 import _styles from "./combobox.module.scss"
 
@@ -15,6 +15,7 @@ const Combobox = () => {
   const items = results || []
 
   const inputRef = useRef(null)
+  const setInputRef = el => (inputRef.current = el)
 
   const {
     tokens,
@@ -24,7 +25,7 @@ const Combobox = () => {
     focusInput,
     handleInputKeyDown,
     handleTokenKeyDown
-  } = useComboboxApi(inputRef)
+  } = useComboboxState(inputRef)
 
   const {
     isOpen,
@@ -81,7 +82,7 @@ const Combobox = () => {
             onFocus: openMenu,
             onKeyDown: handleInputKeyDown,
           })}
-          inputRef={ref => (inputRef.current = ref)}
+          inputRef={setInputRef}
           inputClassName={`${_styles.input}`}
           placeholder={
             tokens.length > 0 ? "Use the Force..." : "Ex. Luke Skywalker"

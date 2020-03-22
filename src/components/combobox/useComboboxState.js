@@ -1,6 +1,6 @@
 import { useState, useRef } from "react"
 
-export const useComboboxApi = (inputRef) => {
+export const useComboboxState = (inputRef) => {
   const [tokens, setTokens] = useState([])
   const tokenRefMap = useRef(new Map())
 
