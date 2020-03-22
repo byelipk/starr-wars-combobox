@@ -39,6 +39,8 @@ const useFetch = url => {
 
   useEffect(() => {
     if (url) {
+      dispatch({ type: "LOADING" })
+
       fetch(url)
         .then(response => response.json())
         .then(response => {

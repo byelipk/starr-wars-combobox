@@ -1,38 +1,12 @@
-import { useEffect } from "react"
-
-import { fetchReducer, initialState } from "./useFetch"
-
-import useThunkReducer from "./useThunkReducer"
+import useFetch from "./useFetch"
 
 export const peopleEndpoint = "https://swapi.co/api/people/"
 
 // See: https://swapi.co/documentation
-export const fetchStarWarsResults = url => {
-  return dispatch => {
-    dispatch({ type: "LOADING" })
-
-    fetch(url)
-      .then(response => response.json())
-      .then(response => {
-        dispatch({
-          type: "RESPONSE_COMPLETE",
-          payload: { response: response.results },
-        })
-      })
-      .catch(error => {
-        dispatch({ type: "ERROR", payload: { error } })
-      })
-  }
-}
-
 export const useStarWarsApi = url => {
-  const [state, dispatch] = useThunkReducer(fetchReducer, initialState)
+  const [response, loading, error] = useFetch(url)
 
-  useEffect(() => {
-    if (Boolean(url)) {
-      dispatch(fetchStarWarsResults(url))
-    }
-  }, [url, dispatch])
+   const results = (response && response.results) || []
 
-  return [state.response, state.loading, state.error]
+  return [results, loading, error]
 }

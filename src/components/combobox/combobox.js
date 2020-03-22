@@ -11,8 +11,7 @@ const getSearchPeopleEndpoint = value => `${peopleEndpoint}?search=${value}`
 
 const Combobox = () => {
   const [endpoint, setEndpoint] = useState("")
-  const [results, loading] = useStarWarsApi(endpoint)
-  const items = results || []
+  const [items, loading] = useStarWarsApi(endpoint)
 
   const inputRef = useRef(null)
   const setInputRef = el => (inputRef.current = el)
