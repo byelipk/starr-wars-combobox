@@ -2,8 +2,9 @@ import React, { useState, useRef, createRef } from "react"
 
 import AutosizeInput from "react-input-autosize"
 import { useCombobox } from "downshift"
-import { useStarWarsApi, getSearchPeopleEndpoint } from "./useStarWarsApi"
 import { useComboboxState } from "./useComboboxState"
+
+import { useStarWarsApi, getSearchPeopleEndpoint } from "./useStarWarsApi"
 
 import _styles from "./combobox.module.scss"
 
