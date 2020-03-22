@@ -53,6 +53,7 @@ const Combobox = () => {
       if (selectedItem) {
         setTokens(tokens => [...tokens, selectedItem.name])
         reset()
+        focusInput()
       }
     },
   })
