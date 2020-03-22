@@ -1,44 +1,30 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useRef, createRef } from "react"
 
 import AutosizeInput from "react-input-autosize"
 import { useCombobox } from "downshift"
+import { useStarWarsApi, peopleEndpoint } from "./useStarWarsApi"
+import { useComboboxApi } from "./useComboboxApi"
 
 import _styles from "./combobox.module.scss"
 
-const peopleEndpoint = "https://swapi.co/api/people/"
+const getSearchPeopleEndpoint = value => `${peopleEndpoint}?search=${value}`
 
-const useFetch = url => {
-  const [response, setResponse] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    if (!url) return
-
-    setLoading(true)
-    setResponse(null)
-    setError(false)
-
-    fetch(url)
-      .then(resp => resp.json())
-      .then(resp => {
-        setLoading(false)
-        setResponse(resp)
-      })
-      .catch(error => {
-        setError(error)
-        setLoading(false)
-      })
-  }, [url])
-
-  return [response, loading, error]
-}
 const Combobox = () => {
-  const [endpoint, setEndpoint] = useState(peopleEndpoint + "?search=darth")
-  const [response, loading, error] = useFetch(endpoint)
-  const items = (response && response.results) || []
+  const [endpoint, setEndpoint] = useState("")
+  const [results, loading] = useStarWarsApi(endpoint)
+  const items = results || []
 
-  const [tokens, setTokens] = useState([])
+  const inputRef = useRef(null)
+
+  const {
+    tokens,
+    setTokens,
+    setTokenRef,
+    removeToken,
+    focusInput,
+    handleInputKeyDown,
+    handleTokenKeyDown
+  } = useComboboxApi(inputRef)
 
   const {
     isOpen,
@@ -51,15 +37,13 @@ const Combobox = () => {
     highlightedIndex,
     getItemProps,
   } = useCombobox({
-    // initialIsOpen: true,
-    // defaultIsOpen: true,
     items,
-    itemToString: (item) => {
+    itemToString: item => {
       return item == null ? "" : item.name
     },
     onInputValueChange: ({ inputValue }) => {
       if (!loading) {
-        setEndpoint(`${peopleEndpoint}?search=${inputValue}`)
+        setEndpoint(getSearchPeopleEndpoint(inputValue))
       }
     },
     onSelectedItemChange: changes => {
@@ -72,16 +56,18 @@ const Combobox = () => {
     },
   })
 
-  const removeToken = index =>
-    setTokens(tokens => tokens.filter((_, idx) => idx !== index))
-
   return (
     <div className={`${_styles.wrapper}`}>
       <label {...getLabelProps()}>Search the Star Wars Universe:</label>
-      <div {...getComboboxProps({ className: _styles.combobox })}>
+      <div
+        {...getComboboxProps({ className: _styles.combobox })}
+        onClick={focusInput}
+      >
         {tokens.map((t, index) => (
           <button
+            ref={el => setTokenRef(el, index)}
             onClick={() => removeToken(index)}
+            onKeyDown={e => handleTokenKeyDown(e, index)}
             type="button"
             key={index}
             className={`${_styles.token}`}
@@ -91,9 +77,11 @@ const Combobox = () => {
         ))}
 
         <AutosizeInput
-          {...getInputProps({ 
-            onFocus: openMenu 
+          {...getInputProps({
+            onFocus: openMenu,
+            onKeyDown: handleInputKeyDown,
           })}
+          inputRef={ref => (inputRef.current = ref)}
           inputClassName={`${_styles.input}`}
           placeholder={
             tokens.length > 0 ? "Use the Force..." : "Ex. Luke Skywalker"
@@ -103,7 +91,9 @@ const Combobox = () => {
 
       <ul
         {...getMenuProps()}
-        className={`${_styles.menu} ${isOpen || loading ? _styles.menuOpen : ""}`}
+        className={`${_styles.menu} ${
+          isOpen || loading ? _styles.menuOpen : ""
+        }`}
       >
         {loading && <li className={`${_styles.menuItem}`}>Loading...</li>}
         {isOpen &&
