@@ -1,6 +1,6 @@
 import { useState, useRef } from "react"
 
-export const useComboboxState = (inputRef) => {
+export const useComboboxState = inputRef => {
   const [tokens, setTokens] = useState([])
   const tokenRefMap = useRef(new Map())
 
@@ -20,15 +20,20 @@ export const useComboboxState = (inputRef) => {
 
   const handleTokenClick = index => {
     setTokens(tokens => {
-      const changes = tokens.filter((_, idx) => idx !== index)
+      const remainingTokens = tokens.filter((_, idx) => idx !== index)
 
-      if (changes.length > 0) {
-        focusToken(index - 1)
+      if (remainingTokens.length > 0) {
+        const clickedTowardsFrontOfList = index < tokens.length - 1
+        if (clickedTowardsFrontOfList) {
+          focusToken(index)
+        } else {
+          focusToken(index - 1)
+        }
       } else {
         focusInput()
       }
 
-      return changes
+      return remainingTokens
     })
   }
 
@@ -61,7 +66,7 @@ export const useComboboxState = (inputRef) => {
       if (e.key === "Backspace" || e.key === "ArrowLeft") {
         focusToken(tokens.length - 1)
       }
-  
+
       if (inputRef.current.value === "" && e.key === "ArrowRight") {
         focusToken(0)
       }
