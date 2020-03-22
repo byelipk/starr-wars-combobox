@@ -2,12 +2,10 @@ import React, { useState, useRef, createRef } from "react"
 
 import AutosizeInput from "react-input-autosize"
 import { useCombobox } from "downshift"
-import { useStarWarsApi, peopleEndpoint } from "./useStarWarsApi"
+import { useStarWarsApi, getSearchPeopleEndpoint } from "./useStarWarsApi"
 import { useComboboxState } from "./useComboboxState"
 
 import _styles from "./combobox.module.scss"
-
-const getSearchPeopleEndpoint = value => `${peopleEndpoint}?search=${value}`
 
 const Combobox = () => {
   const [endpoint, setEndpoint] = useState("")
