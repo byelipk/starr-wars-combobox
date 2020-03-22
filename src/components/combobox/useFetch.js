@@ -1,3 +1,5 @@
+import fetch from "isomorphic-fetch"
+
 import { useEffect, useReducer } from "react"
 
 export const initialState = {

@@ -39,8 +39,15 @@ export const useComboboxState = inputRef => {
 
   const focusInput = () => inputRef.current && inputRef.current.focus()
 
+  // Browser behavior that takes you to previous page when you press the 
+  // `backspace` key. Google it. So annoying...
+  const preventTheBackspaceMeansBackspaceProblem = e => e.preventDefault()
+
   const handleTokenKeyDown = (e, index) => {
+
     if (e.key === "Backspace") {
+      preventTheBackspaceMeansBackspaceProblem(e)
+
       handleTokenClick(index)
     }
 
@@ -62,12 +69,21 @@ export const useComboboxState = inputRef => {
   }
 
   const handleInputKeyDown = e => {
-    if (e.target.value === "") {
-      if (e.key === "Backspace" || e.key === "ArrowLeft") {
+    const value = e.target.value
+
+    if (value === "") {
+      if (e.key === "Backspace") {
+
+        preventTheBackspaceMeansBackspaceProblem(e)
+
         focusToken(tokens.length - 1)
       }
 
-      if (inputRef.current.value === "" && e.key === "ArrowRight") {
+      if (e.key === "ArrowLeft") {
+        focusToken(tokens.length - 1)
+      }
+
+      if (e.key === "ArrowRight") {
         focusToken(0)
       }
     }
