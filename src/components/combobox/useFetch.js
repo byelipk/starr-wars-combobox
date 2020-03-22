@@ -40,21 +40,19 @@ const useFetch = url => {
   const [state, dispatch] = useReducer(fetchReducer, initialState)
 
   useEffect(() => {
-    if (url) {
-      dispatch({ type: "LOADING" })
+    dispatch({ type: "LOADING" })
 
-      fetch(url)
-        .then(response => response.json())
-        .then(response => {
-          dispatch({
-            type: "RESPONSE_COMPLETE",
-            payload: { response: response },
-          })
+    fetch(url)
+      .then(response => response.json())
+      .then(response => {
+        dispatch({
+          type: "RESPONSE_COMPLETE",
+          payload: { response: response },
         })
-        .catch(error => {
-          dispatch({ type: "ERROR", payload: { error } })
-        })
-    }
+      })
+      .catch(error => {
+        dispatch({ type: "ERROR", payload: { error } })
+      })
   }, [url])
 
   return [state.response, state.loading, state.error]

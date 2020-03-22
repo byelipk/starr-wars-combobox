@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef } from "react"
+import React, { useState, useRef } from "react"
 
 import AutosizeInput from "react-input-autosize"
 import { useCombobox } from "downshift"
@@ -58,10 +58,13 @@ const Combobox = () => {
 
   return (
     <div className={`${_styles.wrapper}`}>
-      <label {...getLabelProps()}>Search the Star Wars Universe:</label>
+      <label htmlFor="combobox" {...getLabelProps()}>Search the Star Wars Universe:</label>
       <div
-        {...getComboboxProps({ className: _styles.combobox })}
-        onClick={focusInput}
+        {...getComboboxProps({
+          className: _styles.combobox,
+          onClick: focusInput,
+          role: "combobox"
+        })}
       >
         {tokens.map((t, index) => (
           <button
@@ -78,6 +81,7 @@ const Combobox = () => {
 
         <AutosizeInput
           {...getInputProps({
+            id: "combobox",
             onFocus: openMenu,
             onKeyDown: handleInputKeyDown,
           })}
@@ -90,10 +94,9 @@ const Combobox = () => {
       </div>
 
       <ul
-        {...getMenuProps()}
-        className={`${_styles.menu} ${
-          isOpen || loading ? _styles.menuOpen : ""
-        }`}
+        {...getMenuProps({
+          className: `${_styles.menu} ${(isOpen || loading) ? _styles.menuOpen : ""}`
+        })}
       >
         {loading && <li className={`${_styles.menuItem}`}>Loading...</li>}
         {isOpen &&
