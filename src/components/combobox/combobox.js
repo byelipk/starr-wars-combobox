@@ -47,7 +47,7 @@ const Combobox = () => {
     onSelectedItemChange: changes => {
       const { selectedItem } = changes
 
-      if (selectedItem) {
+      if (selectedItem && !tokens.includes(selectedItem.name)) {
         setTokens(tokens => [...tokens, selectedItem.name])
         reset()
         focusInput()
