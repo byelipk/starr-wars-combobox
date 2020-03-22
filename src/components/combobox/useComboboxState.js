@@ -18,7 +18,7 @@ export const useComboboxState = (inputRef) => {
     }
   }
 
-  const removeToken = index => {
+  const handleTokenClick = index => {
     setTokens(tokens => {
       const changes = tokens.filter((_, idx) => idx !== index)
 
@@ -36,7 +36,7 @@ export const useComboboxState = (inputRef) => {
 
   const handleTokenKeyDown = (e, index) => {
     if (e.key === "Backspace") {
-      removeToken(index)
+      handleTokenClick(index)
     }
 
     if (e.key === "ArrowLeft") {
@@ -74,7 +74,7 @@ export const useComboboxState = (inputRef) => {
     setTokens,
     focusToken,
     focusInput,
-    removeToken,
+    handleTokenClick,
     handleTokenKeyDown,
     handleInputKeyDown,
   }

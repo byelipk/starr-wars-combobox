@@ -18,8 +18,8 @@ const Combobox = () => {
     tokens,
     setTokens,
     setTokenRef,
-    removeToken,
     focusInput,
+    handleTokenClick,
     handleInputKeyDown,
     handleTokenKeyDown
   } = useComboboxState(inputRef)
@@ -65,7 +65,7 @@ const Combobox = () => {
         {tokens.map((t, index) => (
           <button
             ref={el => setTokenRef(el, index)}
-            onClick={() => removeToken(index)}
+            onClick={() => handleTokenClick(index)}
             onKeyDown={e => handleTokenKeyDown(e, index)}
             type="button"
             key={index}
